@@ -132,6 +132,23 @@ public class EmployeePayrollService {
            System.out.println("Salary ="+salary);
        }
     }
+    void retriveByDate(String firstDate ,String secondDate) throws SQLException {
+        Connection con = DriverManager.getConnection(jdbcurl, userName, password);
+        PreparedStatement stmt = con.prepareStatement("select * from employee_payroll where date between ? and ? ");
+        stmt.setString(1,firstDate);
+        stmt.setString(2,secondDate);
+        ResultSet resultSet=stmt.executeQuery();
+        while(resultSet.next()){
+            int id=resultSet.getInt("id");
+            String employeeName= resultSet.getString("employee_name");
+            int salary =resultSet.getInt("salary");
+            Date date =resultSet.getDate("date");
+            System.out.println("id ="+id);
+            System.out.println("Employee Name ="+employeeName);
+            System.out.println("Salary ="+salary);
+            System.out.println("Date ="+date.toString());
+        }
+    }
 
 
     public static void main(String[] args) throws Exception {
@@ -161,6 +178,12 @@ public class EmployeePayrollService {
                 obj.retriveByName(empName);
             }
             else if(choice==6){
+                System.out.println("Enter The Range of date");
+                System.out.println("Enter First Date");
+                System.out.println("Enter Second Date");
+                String firstDate=inp.next();
+                String secondDate=inp.next();
+                obj.retriveByDate(firstDate,secondDate);
 
             }
         } while (choice != 10);
